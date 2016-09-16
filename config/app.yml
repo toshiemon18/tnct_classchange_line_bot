@@ -1,0 +1,6 @@
+app:
+  url: "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php"
+  line:
+    channel_id:
+    channel_secret:
+    mid:
