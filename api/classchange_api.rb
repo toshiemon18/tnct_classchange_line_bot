@@ -4,7 +4,9 @@
 # http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php
 
 require "open-uri"
+require "uri"
 require "nokogiri"
+require "nkf"
 
 module TNCTClassChangeLINEBOT
   class ScrapeClassChange
@@ -12,7 +14,7 @@ module TNCTClassChangeLINEBOT
       config = api_config
       # @url = config["url"]
       # @xpath = config["xpath"]
-      @url = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php?date=2016.7.27"
+      @url = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php?date=2016.7.25"
       @xpath = "//table[@width=\"70%\"]/tr[@height=\"35\"]"
     end
 
@@ -24,16 +26,40 @@ module TNCTClassChangeLINEBOT
       end
 
       doc = Nokogiri::HTML.parse(html, nil, charset)
-      # puts doc.xpath(@xpath).each {|e| puts e}
-      classchange_hash = {}
-      # th_tag = doc.xpath(@xpath)[0]
-      # puts th_tag.inner_html
+      classchange_hash = to_hash(doc)
+
+      return classchange_hash
+    end
+
+    private
+
+    def pick_up_classchange(node)
+      context = node.css("td").text
+      context.gsub!(URI.decode("%E3%83%BB"), ", ") if context.match(URI.decode("%E3%83%BB"))
+      context = NKF.nkf('-m0Z1 -W -w', context)
+    end
+
+    def to_hash(doc)
+      cc_hash = {}
+      prev_key = ""
       doc.xpath(@xpath).each do |elem|
-        puts elem.css()
+        class_name = elem.css("th").text
+        class_name = NKF.nkf('-m0Z1 -W -w', class_name) # convert to half-width character
+        prev_key = class_name unless class_name.empty?
+        cc = pick_up_classchange(elem)
+
+        if class_name.empty?
+          tmp = cc_hash[prev_key]
+          cc_hash[prev_key] = [tmp, cc]
+        else
+          cc_hash[class_name] = cc
+        end
       end
+
+      return cc_hash
     end
   end
 end
 
 mod = TNCTClassChangeLINEBOT::ScrapeClassChange.new(nil)
-mod.fetch_classchange
+puts mod.fetch_classchange
