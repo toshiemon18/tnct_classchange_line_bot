@@ -6,4 +6,5 @@ gem "nokogiri"
 gem "faraday"
 gem "faraday_middleware"
 gem "rspec"
+gem "pry"
 
