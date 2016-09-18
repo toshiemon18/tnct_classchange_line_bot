@@ -11,12 +11,13 @@ require "nkf"
 
 module TmNCTClassChangeLINEBOT
   class TmNCTClassChangeAPI
-    def initialize(api_config)
-      config = api_config
+    def initialize(url:, xpath:)
       # @url = config["url"]
       # @xpath = config["xpath"]
-      @url = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php?date=2016.7.25"
-      @xpath = "//table[@width=\"70%\"]/tr[@height=\"35\"]"
+      # @url = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php?date=2016.7.25"
+      # @xpath = "//table[@width=\"70%\"]/tr[@height=\"35\"]"
+      @url = url
+      @xpath = xpath
     end
 
     def run

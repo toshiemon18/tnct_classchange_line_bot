@@ -6,5 +6,15 @@ gem "nokogiri"
 gem "faraday"
 gem "faraday_middleware"
 gem "rspec"
-gem "pry"
 
+group :development, :test do
+  gem "pry-coolline"
+  gem "pry-rails"
+  gem "pry-byebug"
+  gem "pry-stack_explorer"
+
+  gem "awesome_print"
+
+  gem "hirb"
+  gem "hirb-unicode"
+end
