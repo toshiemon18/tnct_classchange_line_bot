@@ -1,6 +1,6 @@
 app:
   url: "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php"
-  xpaths: "//html/body/table[3]/tbody/tr"
+  xpath: "//table[@width=\"70%\"]/tr[@height=\"35\"]"
   line:
     channel_id:
     channel_secret:
