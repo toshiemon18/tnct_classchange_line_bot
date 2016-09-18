@@ -1,13 +1,13 @@
 # coding : utf-8
 
-# TNCT ClassChange API
+# Scrape TNCT class change page
 # http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php
 
 require "open-uri"
 require "nokogiri"
 
 module TNCTClassChangeLINEBOT
-  class ClassChangeAPI
+  class ScrapeClassChange
     def initialize(api_config)
       config = api_config
       # @url = config["url"]
@@ -24,12 +24,16 @@ module TNCTClassChangeLINEBOT
       end
 
       doc = Nokogiri::HTML.parse(html, nil, charset)
-      puts doc.xpath(@xpath).each {|e| puts e}
-      # doc.xpath(@xpath).each do |elem|
-      # end
+      # puts doc.xpath(@xpath).each {|e| puts e}
+      classchange_hash = {}
+      # th_tag = doc.xpath(@xpath)[0]
+      # puts th_tag.inner_html
+      doc.xpath(@xpath).each do |elem|
+        puts elem.css()
+      end
     end
   end
 end
 
-mod = TNCTClassChangeLINEBOT::ClassChangeAPI.new(nil)
+mod = TNCTClassChangeLINEBOT::ScrapeClassChange.new(nil)
 mod.fetch_classchange
