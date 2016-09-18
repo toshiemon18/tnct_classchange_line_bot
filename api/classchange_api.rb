@@ -20,7 +20,7 @@ module TmNCTClassChangeLINEBOT
     end
 
     def run
-
+      fetch.to_json
     end
 
     private
@@ -55,7 +55,7 @@ module TmNCTClassChangeLINEBOT
         end
       end
 
-      return cc_hash.to_json
+      return cc_hash
     end
 
     def pick_up_classchange(node)
