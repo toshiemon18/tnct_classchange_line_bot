@@ -1,0 +1,7 @@
+app:
+  url: "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php"
+  xpaths: "//html/body/table[3]/tbody/tr"
+  line:
+    channel_id:
+    channel_secret:
+    mid:
