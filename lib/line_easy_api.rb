@@ -8,26 +8,12 @@ require "uri"
 
 module TmNCTClassChangeLINEBOT
   module EasyLineAPI
-    class HttpConnector
-      def get(url, header={})
-        uri = URI(url)
-        http_client.get(uri.request_uri, header)
-      end
 
-      def post(url, payload, header={})
-        uri = URI(url)
-        http_client.post(uri.request_uri, payload, header)
-      end
-
-      def http_client(uri)
-        client = Net::HTTP.new(uri.host, uri.port)
-        client.use_ssl = true if uri.scheme == "https"
-        client
-      end
-    end
+    class InvalidCredentialError < Error; end
 
     class Client
       attr_accessor :channel_id, :channel_secret, :mid, :endpoint
+      DEFAULT_ENDPOINT = "https://trialbot-api.line.me/v1"
 
       def initialize(options={})
         options.each {|k, v| instance_varable_set("#{k}", v) }
@@ -35,6 +21,26 @@ module TmNCTClassChangeLINEBOT
 
         @http_client = TmNCTClassChangeLINEBOT::EasyLineAPI::HttpConnector.new
       end
+
+      def send_message()
+        unless valid_credentials?
+          raise TmNCTClassChangeLINEBOT::EasyLineAPI::InvalidCredentialError, "Invalidates credentials"
+        end
+      end
+
+      private
+      def credentials
+        {
+          "X-Line-ChannelID"             => channel_id,
+          "X-Line-ChannelSecret"         => channel_secret,
+          "X-Line-Trusted-User-With-ACL" => mid
+        }
+      end
+
+      def valid_credentials?
+        credentials.values.all?
+      end
+
     end
   end
 end
