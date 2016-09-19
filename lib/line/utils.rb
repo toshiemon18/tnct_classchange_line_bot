@@ -2,8 +2,8 @@
 
 module TmNCTClassChangeLINEBOT
   module EasyLineAPI
-
-    class InvalidCredentialError < Error; end
-
+    module Utils
+      class InvalidCredentialError < Error; end
+    end
   end
 end
