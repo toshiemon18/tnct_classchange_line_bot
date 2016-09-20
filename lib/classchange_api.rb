@@ -3,7 +3,6 @@
 # Scrape TmNCT class change page
 # http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php
 
-require "json"
 require "open-uri"
 require "uri"
 require "nokogiri"
@@ -21,7 +20,11 @@ module TmNCTClassChangeLINEBOT
     end
 
     def run
-      fetch.to_json
+      fetch
+    end
+
+    def set_date(time)
+      self.url << "?date=#{time.year}.#{time.month}.#{time.day}"
     end
 
     private
