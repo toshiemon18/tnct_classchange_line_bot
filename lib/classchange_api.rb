@@ -20,7 +20,7 @@ module TmNCTClassChangeLINEBOT
     end
 
     def run
-      fetch.to_json
+      fetch
     end
 
     private
