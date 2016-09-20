@@ -23,6 +23,10 @@ module TmNCTClassChangeLINEBOT
       fetch
     end
 
+    def set_date(time)
+      self.url << "?date=#{time.year}.#{time.month}.#{time.day}"
+    end
+
     private
 
     def fetch
