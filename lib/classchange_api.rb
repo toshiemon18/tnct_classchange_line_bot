@@ -3,7 +3,6 @@
 # Scrape TmNCT class change page
 # http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php
 
-require "json"
 require "open-uri"
 require "uri"
 require "nokogiri"
