@@ -5,7 +5,7 @@ source "https://rubygems.org"
 gem "nokogiri"
 gem "faraday"
 gem "faraday_middleware"
-gem "rspec"
+gem "sinatra"
 
 group :development, :test do
   gem "pry-coolline"
@@ -17,4 +17,6 @@ group :development, :test do
 
   gem "hirb"
   gem "hirb-unicode"
+
+  gem "rspec"
 end
