@@ -16,9 +16,6 @@ module TmNCTClassChangeLINEBOT
         mid: @yaml["line"]["mid"],
         proxy: @yaml["line"]["proxy"]
       )
-      client.endpoint = @yaml["line"]["endpoint"]
-      client.event_type = @yaml["line"]["event_type"]
-      client.path = @yaml["line"]["path"]
     end
 
     def classchange_client
