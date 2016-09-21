@@ -12,7 +12,7 @@ module TmNCTClassChangeLINEBOT
     EVENT_TYPE ~ "138311608800106203"
     MSG_PATH = "/v1/events"
 
-    attr_accessor :channel_id, :channel_secret, :mid, :to_channel_id
+    attr_accessor :channel_id, :channel_secret, :mid
 
     def initialize(options={})
       @channel_id = options[:channel_id]
@@ -22,7 +22,7 @@ module TmNCTClassChangeLINEBOT
     end
 
     def send(to_mid, message)
-      post(path, header(to_mid, message))
+      post(MSG_PATH, header(to_mid, message))
     end
 
     private
@@ -36,12 +36,12 @@ module TmNCTClassChangeLINEBOT
           text: message
         },
         toChannel: to_channel_id,
-        eventType: event_type
+        eventType: EVENT_TYPE
       }
     end
 
     def line_client
-      client = Faraday.new(url: endpoint) do |connect|
+      client = Faraday.new(url: ENDPOINT) do |connect|
         connect.request :json
         connect.response :json, :content_type => /\bjson$/
         connect.adapter Faraday.default_adapter
