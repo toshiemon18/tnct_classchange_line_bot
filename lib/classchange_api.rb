@@ -10,24 +10,29 @@ require "nkf"
 
 module TmNCTClassChangeLINEBOT
   class TmNCTClassChangeAPI
-    def initialize(url:, xpath:)
-      # @url = config["url"]
-      # @xpath = config["xpath"]
-      # @url = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php?date=2016.7.25"
-      # @xpath = "//table[@width=\"70%\"]/tr[@height=\"35\"]"
-      @url = url
-      @xpath = xpath
+    ENDPOINT = "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php"
+    XPATH = "//table[@width=\"70%\"]/tr[@height=\"35\"]"
+
+    attr_accessor :date
+
+    def initialize(date)
+      @url = generate_query(date)
     end
 
     def run
       fetch
     end
 
-    def set_date(time)
-      self.url << "?date=#{time.year}.#{time.month}.#{time.day}"
+    def date=(date)
+      self.date
+      @url = generate_query(date)
     end
 
     private
+
+    def generate_query(time)
+      ENDPOINT + "?date=#{time.year}.#{time.month}.#{time.day}"
+    end
 
     def fetch
       charset = nil
@@ -37,25 +42,24 @@ module TmNCTClassChangeLINEBOT
       end
 
       doc = Nokogiri::HTML.parse(html, nil, charset)
-      classchange_hash = to_hash(doc)
+      classchange_hash = doc_to_hash(doc)
 
       return classchange_hash
     end
 
-    def to_hash(doc)
+    def doc_to_hash(doc)
       cc_hash = {}
       prev_key = ""
-      doc.xpath(@xpath).each do |elem|
+      doc.xpath(XPATH).each do |elem|
         class_name = elem.css("th").text
         class_name = NKF.nkf('-m0Z1 -W -w', class_name)
         prev_key = class_name unless class_name.empty?
         cc = pick_up_classchange(elem)
 
         if class_name.empty?
-          tmp = cc_hash[prev_key]
-          cc_hash[prev_key] = [tmp, cc]
+          cc_hash[prev_key] << cc
         else
-          cc_hash[class_name] = cc
+          cc_hash[class_name] = [cc]
         end
       end
 
