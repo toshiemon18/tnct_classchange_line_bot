@@ -1,10 +1,5 @@
-url: "http://jyugyou.tomakomai-ct.ac.jp/jyugyou.php"
-xpath: "//table[@width=\"70%\"]/tr[@height=\"35\"]"
 line:
   channel_id: "1481303477"
   channel_secret: "1b7ba37ed19970a9f4f5c98c752dc51d"
   mid: "u86ff8df094e2e748f4bc675559ef2fc1"
-  endpoint: "https://trialbot-api.line.me"
-  event_type: "138311608800106203"
-  path: "/v1/events"
   proxy: ""
