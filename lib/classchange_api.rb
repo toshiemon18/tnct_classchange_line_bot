@@ -16,17 +16,22 @@ module TmNCTClassChangeLINEBOT
     attr_accessor :date
 
     def initialize(date)
-      @url = ENDPOINT + generate_query(date)
+      @url = generate_query(date)
     end
 
     def run
       fetch
     end
 
+    def date=(date)
+      self.date
+      @url = generate_query(date)
+    end
+
     private
 
     def generate_query(time)
-      "?date=#{time.year}.#{time.month}.#{time.day}"
+      ENDPOINT + "?date=#{time.year}.#{time.month}.#{time.day}"
     end
 
     def fetch
@@ -52,10 +57,9 @@ module TmNCTClassChangeLINEBOT
         cc = pick_up_classchange(elem)
 
         if class_name.empty?
-          tmp = cc_hash[prev_key]
-          cc_hash[prev_key] = [tmp, cc]
+          cc_hash[prev_key] << cc
         else
-          cc_hash[class_name] = cc
+          cc_hash[class_name] = [cc]
         end
       end
 
