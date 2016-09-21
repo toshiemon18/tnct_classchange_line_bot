@@ -8,8 +8,11 @@ require "faraday_middleware"
 module TmNCTClassChangeLINEBOT
   class EasyLineAPI
 
-    attr_accessor :channel_id, :channel_secret, :mid, :to_channel_id,
-                  :endpoint, :event_type, :path
+    ENDPOINT = "https://trialbot-api.line.me"
+    EVENT_TYPE ~ "138311608800106203"
+    MSG_PATH = "/v1/events"
+
+    attr_accessor :channel_id, :channel_secret, :mid, :to_channel_id
 
     def initialize(options={})
       @channel_id = options[:channel_id]
