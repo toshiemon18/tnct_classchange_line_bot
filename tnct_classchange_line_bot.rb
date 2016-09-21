@@ -60,6 +60,7 @@ module TmNCTClassChangeLINEBOT
   class BOT < Sinatra::Base
     attr_accessor :classchange
 
+<<<<<<< HEAD
     def load_helper
       @helper = TmNCTClassChangeLINEBOT::Helper.new
     end
@@ -90,6 +91,13 @@ module TmNCTClassChangeLINEBOT
           )
         end
       end
+=======
+    def initialize
+      @helper = TmNCTClassChangeLINEBOT::Helper.new
+    end
+
+    post "/callback" do
+>>>>>>> a50c891b30d2d08bc51b8a3ae1666d02bef1d86c
     end
   end
 end
