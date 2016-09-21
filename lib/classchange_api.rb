@@ -37,12 +37,12 @@ module TmNCTClassChangeLINEBOT
       end
 
       doc = Nokogiri::HTML.parse(html, nil, charset)
-      classchange_hash = to_hash(doc)
+      classchange_hash = doc_to_hash(doc)
 
       return classchange_hash
     end
 
-    def to_hash(doc)
+    def doc_to_hash(doc)
       cc_hash = {}
       prev_key = ""
       doc.xpath(XPATH).each do |elem|
