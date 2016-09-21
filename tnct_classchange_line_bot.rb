@@ -9,8 +9,9 @@ module TmNCTClassChangeLINEBOT
   class BOT < Sinatra::Base
     attr_accessor :classchange
 
-    def initialize
-      @helper = TmNCTClassChangeLINEBOT::Helper.new
+    def run!
+
+      super
     end
 
     post "/callback" do
