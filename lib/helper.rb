@@ -22,10 +22,7 @@ module TmNCTClassChangeLINEBOT
     end
 
     def classchange_client
-      TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(
-        url: @yaml["url"],
-        xpath: @yaml["xpath"]
-      )
+      TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(date)
     end
 
     def translate_to_key(class_name)
@@ -44,10 +41,6 @@ module TmNCTClassChangeLINEBOT
 
     def has_classchange?(class_name, classchange)
       chasschange.has_key?(class_name)
-    end
-
-    def fetch_current_time
-      Time.now
     end
   end
 end
