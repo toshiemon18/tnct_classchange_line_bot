@@ -36,7 +36,13 @@ helpers LineBotHelper
 Thread.start do
   prev_hour = Time.now.hour
   loop do
-    current_hour = Time.now.hour
+    t = Time.now
+    current_hour = t.hour
+    if t.wday == 0 or t.wday == 6
+      sleep 200
+      next
+    end
+
     diff_hour = current_hour - prev_hour
     if diff_hour != 0
       # update class change
