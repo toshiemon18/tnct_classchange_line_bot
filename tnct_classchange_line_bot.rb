@@ -19,8 +19,8 @@ module LineBotHelper
     ).send(to_mid, message)
   end
 
-  def self.classchange_client
-    TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(self.date)
+  def self.fetch_classchange(date)
+    TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(date)
   end
 
   def self.has_classchange?(class_name, classchange)
@@ -36,9 +36,9 @@ helpers LineBotHelper
 Thread.start do
   prev_hour = Time.now.hour
   loop do
-    t = Time.now
-    current_hour = t.hour
-    if t.wday == 0 or t.wday == 6
+    date = Time.now
+    current_hour = date.hour
+    if date.wday == 0 or date.wday == 6
       sleep 200
       next
     end
@@ -46,6 +46,7 @@ Thread.start do
     diff_hour = current_hour - prev_hour
     if diff_hour != 0
       # update class change
+      LineBotHelper.fetch_classchange(date)
       prev_hour = current_hour
     end
 
