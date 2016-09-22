@@ -50,6 +50,6 @@ Thread.start do
 end
 
 # destination of callback url of sent message
-post "/linebot/callback" do
+post "/callback" do
 
 end
