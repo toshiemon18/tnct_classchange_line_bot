@@ -7,13 +7,6 @@ require "./lib/helper"
 
 module TmNCTClassChangeLINEBOT
   class BOT < Sinatra::Base
-    attr_accessor :classchange
-
-    def run!
-
-      super
-    end
-
     post "/callback" do
     end
   end
