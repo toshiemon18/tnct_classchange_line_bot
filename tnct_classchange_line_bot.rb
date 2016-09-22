@@ -9,14 +9,14 @@ module LineBotHelper
     YAML.load_file("./config/app_.yml")
   end
 
-  def self.line_client
+  def self.send_line_message(to_mid, message)
     conf = load_yaml["line"]
     client = TmNCTClassChangeLINEBOT::EasyLineAPI.new(
       channel_id: conf["channel_id"],
       channel_secret: conf["channel_secret"],
       mid: conf["mid"],
       proxy: conf["proxy"]
-    )
+    ).send(to_mid, message)
   end
 
   def self.classchange_client
