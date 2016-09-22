@@ -34,25 +34,31 @@ helpers LineBotHelper
 # send a message to all friends at 22:00
 # update class change hash every one hour
 Thread.start do
+  # fetch class change
   class_change ||= LineBotHelper.fetch_classchange(Time.now)
   prev_hour = Time.now.hour
   loop do
     date = Time.now
     current_hour = date.hour
+    # skip process in Sunday and Saterday
     if date.wday == 0 or date.wday == 6
       sleep 200
       next
     end
 
+    # culcurate time difference
     diff_hour = current_hour - prev_hour
+    # update class change
     if diff_hour != 0
-      # update class change
       class_change ||= LineBotHelper.fetch_classchange(date)
       prev_hour = current_hour
     end
 
+    # send a message to all friends
     if current_time == 22
-      # send a message to all friends
+      #
+      #
+      #
     end
   end
 end
