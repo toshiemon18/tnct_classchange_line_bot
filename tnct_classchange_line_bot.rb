@@ -1,18 +1,15 @@
-require 'active_support/all'
 require "sinatra"
 require "yaml"
 require "json"
 require "./lib/classchange_ap"
 require "./lib/easy_line_api"
 
-class LineBotHelper
-  attr_accessor :date
-
-  def initialize
-    YAML.load_file("./config/app.yml")
+module LineBotHelper
+  def self.load_yaml
+    YAML.load_file("./config/app_.yml")
   end
 
-  def line_client
+  def self.line_client
     conf = load_yaml["line"]
     client = TmNCTClassChangeLINEBOT::EasyLineAPI.new(
       channel_id: conf["channel_id"],
@@ -22,26 +19,28 @@ class LineBotHelper
     )
   end
 
-  def classchange_client
+  def self.classchange_client
     TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(self.date)
   end
 
-  def has_classchange?(class_name, classchange)
+  def self.has_classchange?(class_name, classchange)
     chasschange.has_key?(class_name)
   end
 end
 
-helper = LineBotHelper.new
+# regist helper module
+helpers LineBotHelper
 
 # send a message to all friends at 22:00
 # update class change hash every one hour
 Thread.start do
-  prev_time = Time.now.hour
+  prev_hour = Time.now.hour
   loop do
-    current_time = Time.now.hour
-    diff_time = current_time - prev_time
-    if diff_time != 0
-      prev_time = current_time
+    current_hour = Time.now.hour
+    diff_hour = current_hour - prev_hour
+    if diff_hour != 0
+      # update class change
+      prev_hour = current_hour
     end
 
     if current_time == 22
