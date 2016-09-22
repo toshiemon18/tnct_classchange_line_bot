@@ -3,50 +3,67 @@ require "yaml"
 require "json"
 require "./lib/classchange_ap"
 require "./lib/easy_line_api"
-require "./lib/helper"
 
-module TmNCTClassChangeLINEBOT
-  class BOT < Sinatra::Base
-    attr_accessor :classchange
+module LineBotHelper
+  def self.load_yaml
+    YAML.load_file("./config/app_.yml")
+  end
 
-<<<<<<< HEAD
-    def load_helper
-      @helper = TmNCTClassChangeLINEBOT::Helper.new
+  def self.send_line_message(to_mid, message)
+    conf = load_yaml["line"]
+    client = TmNCTClassChangeLINEBOT::EasyLineAPI.new(
+      channel_id: conf["channel_id"],
+      channel_secret: conf["channel_secret"],
+      mid: conf["mid"],
+      proxy: conf["proxy"]
+    ).send(to_mid, message)
+  end
+
+  def self.fetch_classchange(date)
+    TmNCTClassChangeLINEBOT::TmNCTClassChangeAPI.new(date)
+  end
+
+  def self.has_classchange?(class_name, classchange)
+    chasschange.has_key?(class_name)
+  end
+end
+
+# regist helper module
+helpers LineBotHelper
+
+# send a message to all friends at 22:00
+# update class change hash every one hour
+Thread.start do
+  # fetch class change
+  class_change ||= LineBotHelper.fetch_classchange(Time.now)
+  prev_hour = Time.now.hour
+  loop do
+    date = Time.now
+    current_hour = date.hour
+    # skip process in Sunday and Saterday
+    if date.wday == 0 or date.wday == 6
+      sleep 200
+      next
     end
 
-    def fetch_classchange
-      self.classchange = @helper.classchange_client.run
+    # culcurate time difference
+    diff_hour = current_hour - prev_hour
+    # update class change
+    if diff_hour != 0
+      class_change ||= LineBotHelper.fetch_classchange(date)
+      prev_hour = current_hour
     end
 
-    post "/callback" do
-      load_helper
-
-      current_time = @helper.fetch_current_time
-
-      params = JSON.parse(request.body.read)
-      params[:result].each do |msg|
-        next if msg["content"]["contentType"] != 1
-        message = msg["content"]["text"]
-        from_user_id = msg["content"]["from"]
-
-        key = translate_to_key(message)
-        if !key
-          @helper.line_client.send(from_user_id, "そのクラスは存在しませんよ！")
-        elsif !@helper.has_classchange?(key, classchange)
-          @helper.line_client.send(from_user_id, "授業変更はありません！")
-        else
-          @helper.line_client.send(from_user_id,
-            ""
-          )
-        end
-      end
-=======
-    def initialize
-      @helper = TmNCTClassChangeLINEBOT::Helper.new
-    end
-
-    post "/callback" do
->>>>>>> a50c891b30d2d08bc51b8a3ae1666d02bef1d86c
+    # send a message to all friends
+    if current_time == 22
+      #
+      #
+      #
     end
   end
+end
+
+# destination of callback url of sent message
+post "/callback" do
+
 end
